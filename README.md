@@ -15,3 +15,5 @@
 [Laboratory Work #1](https://github.com/Catalin-Tin/TMPS/tree/main/TMPS-SOLID)
 
 [Laboratory Work #2](https://github.com/Catalin-Tin/TMPS/blob/main/CreationalPattern/raport.md)
+
+[Laboratory Work #3](https://github.com/Catalin-Tin/TMPS/blob/main/SructuralPattern/lab3.md)
