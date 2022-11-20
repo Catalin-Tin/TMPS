@@ -1,41 +1,30 @@
-class Hybrid:
+import copy
+
+class High:
 
     def __init__(self):
-        self.name = "Hybrid Car"
+        self.name = "High Energy dogs"
 
-    def BatteryEngine(self):
-        return "Battery and Engine"
-
-
-class Standard:
-
-    def __init__(self):
-        self.name = "Engine Car"
-
-    def Engine(self):
-        return "Engine"
+    def HighEnergy(self):
+        return "likes to play a lot"
 
 
-class Electric:
+class Medium:
 
     def __init__(self):
-        self.name = "Electric Car"
+        self.name = "Medium Energy dogs"
 
-    def Battery(self):
-        return "Battery"
+    def MediumEnergy(self):
+        return "search for some attention"
 
 
-class LeafElement:
-    """Class representing objects at the bottom or Leaf of the hierarchy tree."""
+class Low:
 
-    def __init__(self, *args):
-        """'Takes the first positional argument and assigns to member variable "position"."""
-        self.position = args[0]
+    def __init__(self):
+        self.name = "Low Energy dogs"
 
-    def showDetails(self):
-        """Prints the position of the child element."""
-        print("\t", end="")
-        print(self.position)
+    def LowEnergy(self):
+        return "don't botter you that much"
 
 
 class Adapter:
@@ -57,39 +46,202 @@ class Adapter:
         return self.obj.__dict__
 
 
-class CompositeElement:
-    """Class representing objects at any level of the hierarchy
-     tree except for the bottom or leaf level. Maintains the child
-      objects by adding and removing them from the tree structure."""
+class purebread:
+    def __init__(self, name):
+        self.name = name
+
+    def price(self):
+        return "Expensive!"
+
+    def food(self):
+        return "Good meat and dog food"
+
+    def __str__(self):
+        return "Purebread dog"
+
+
+class stray:
+    def __init__(self, name):
+        self.name = name
+
+    def price(self):
+        return "Free!"
+
+    def food(self):
+        return "Everything"
+
+    def __str__(self):
+        return "Stray dog"
+
+
+class identity:
+
+    def __init__(self):
+        self.name = 'sandy'
+        self.color = 'red'
+        self.voice = 'high'
+
+    def __str__(self):
+        return 'The obj attributes cloned are: {} | {} | {}'.format(self.name, self.color, self.voice)
+
+
+class canide:
+    _attr_dict = {}
+
+    def __init__(self):
+        self.__dict__ = self._attr_dict
+
+
+class singleton(canide):
+    def __init__(self, **kwargs):
+        canide.__init__(self)
+        self._attr_dict.update(kwargs)
+
+    def __str__(self):
+        return str(self._attr_dict)
+
+
+def get_pet(pet="purebread dog"):
+    """the factory method"""
+    pets = dict(purebread=purebread("lucky"), stray=stray("poor"))
+    return pets[pet]
+
+
+class director():
+    def __init__(self, name):
+        self.name = name
+
+    def get_pet_without_hair(self):
+        # one config
+        self.name.get_pet()
+        self.name.add_type()
+        self.name.add_color()
+        self.name.add_length()
+
+    def get_pet_with_hair(self):
+        # another config
+        self.name.get_pet()
+        self.name.add_type()
+        self.name.add_color()
+        self.name.add_length()
+        self.name.add_hair()
+
+    def get_pet(self):
+        return self.name.pet
+
+
+class builder():
+    # generate the class pet and hand it over to hair_builder
+    def __init__(self, pet=None):
+        self.pet = pet
+
+    def get_pet(self):
+        self.pet = pet()
+
+
+class hair_builder(builder):
+    # this initialise the attributes of the class
+    def add_type(self):
+        self.pet.type = 'Retriever'
+
+    def add_color(self):
+        self.pet.color = "Golden"
+
+    def add_length(self):
+        self.pet.length = '25cm'
+
+    def add_hair(self):
+        self.pet.hair = 'Straight Hair'
+
+
+class pet():
+    # this is the core class to be initialised
+    def __init__(self):
+        self.type = None
+        self.color = None
+        self.length = None
+        self.hair = None
+
+    def __str__(self):
+        if self.hair:
+            return f"This is TYPE: {self.type}, COLOR: {self.color}, LENGTH: {self.length} WITH HAIR: {self.hair}"
+        else:
+            return f"This is TYPE: {self.type}, COLOR: {self.color}, LENGTH: {self.length} WITH NO HORN"
+
+
+class petfactory:
+    def __init__(self, name):
+        self.name = name
+
+    def get_pet_obj(self):
+        return get_pet(self.name)
+
+    def get_food(self):
+        return get_pet(self.name).food()
+
+
+class petStore:
+    def __init__(self, pet_factory=None):
+        self._pet_factory = pet_factory
+
+    def show_pet(self):
+        pet = self._pet_factory.get_pet_obj()
+        food = self._pet_factory.get_food()
+
+        print(f"The pet is {pet} and the food is {food}, and the price is {pet.price()}")
+
+
+class prototype:
+
+    def __init__(self):
+        self.obj_dict = {}
+
+    def register_class(self, name, obj):
+        self.obj_dict[name] = obj
+
+    def unregister_class(self, name):
+        del self.obj_dict[name]
+
+    def clone(self, name, **attr):
+        obj_aux = copy.deepcopy(self.obj_dict.get(name))
+        obj_aux.__dict__.update(attr)
+
+        return obj_aux
+
+
+class LeafElement:
+    """Class representing objects at the bottom or Leaf of the hierarchy tree."""
 
     def __init__(self, *args):
-        """Takes the first positional argument and assigns to member
-         variable "position". Initializes a list of children elements."""
+        """'Takes the first positional argument and assigns to member variable "position"."""
+        self.position = args[0]
+
+    def showDetails(self):
+        """Prints the position of the child element."""
+        print("\t", end="")
+        print(self.position)
+
+
+class CompositeElement:
+
+    def __init__(self, *args):
         self.position = args[0]
         self.children = []
 
     def add(self, child):
-        """Adds the supplied child element to the list of children
-         elements "children"."""
         self.children.append(child)
 
     def remove(self, child):
-        """Removes the supplied child element from the list of
-        children elements "children"."""
         self.children.remove(child)
 
     def showDetails(self):
-        """Prints the details of the component element first. Then,
-        iterates over each of its children, prints their details by
-        calling their showDetails() method."""
         print(self.position)
         for child in self.children:
             print("\t", end="")
             child.showDetails()
 
-
-class BasicCar:
-    """Represents a Mark of Car """
+class SimpleDog:
+    """Represents a Dog """
 
     def __init__(self, text):
         self._text = text
@@ -98,149 +250,109 @@ class BasicCar:
         return self._text
 
 
-class EngineTuning(BasicCar):
+class DogSize(SimpleDog):
 
     def __init__(self, wrapped):
         self._wrapped = wrapped
 
     def render(self):
-        return "<200horsepowers+>{}".format(self._wrapped.render())
+        return "<Giant>{}".format(self._wrapped.render())
 
 
-class BodyTuning(BasicCar):
-
-    def __init__(self, wrapped):
-        self._wrapped = wrapped
-
-    def render(self):
-        return "<yellow color with golden rims>{}".format(self._wrapped.render())
-
-
-class InteriorTuning(BasicCar):
+class DogEnergy(SimpleDog):
 
     def __init__(self, wrapped):
         self._wrapped = wrapped
 
     def render(self):
-        return "<Alcantara Wrap>{}".format(self._wrapped.render())
+        return "<High>{}".format(self._wrapped.render())
 
 
-class Highway:
+class DogShedding(SimpleDog):
 
-    def drivingOnHighway(self):
-        print("You may go....")
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
 
-
-class HighwayProxy:
-    def __init__(self):
-
-        self.timeLeft = 500
-        self.highway = None
-
-    def drivingOnHighway(self):
-
-        print("Proxy in action. Checking to see if time of payment has passed...")
-        if self.timeLeft >= 200:
-            # If the balance is greater than 500, let him drive.
-            self.highway = Highway()
-            self.highway.drivingOnHighway()
-        else:
-
-            # Otherwise, don't instantiate the highway object.
-            print("Your fee balance is smaller than 200, first pay the fee")
-
-
-class ComplexCars(object):
-
-    def __init__(self):
-        pass
-
-    def cars(self, car_name):
-        return "ComplexPattern[% s]" % (car_name)
-
-
-class CarFamilies(object):
-
-    car_family = {}
-
-    def __new__(cls, name, car_family_id):
-        try:
-            id = cls.car_family[car_family_id]
-        except KeyError:
-            id = object.__new__(cls)
-            cls.car_family[car_family_id] = id
-        return id
-
-    def set_car_info(self, car_info):
-
-        cg = ComplexCars()
-        self.car_info = cg.cars(car_info)
-
-    def get_car_info(self):
-
-        return (self.car_info)
-
+    def render(self):
+        return "<Heavy>{}".format(self._wrapped.render())
 
 """ main method """
 if __name__ == "__main__":
-    print("-------------------Adapter Method------------------------")
-    """list to store objects"""
-    objects = []
 
-    HybridCar = Hybrid()
-    objects.append(Adapter(HybridCar, type=HybridCar.BatteryEngine))
+dog1Class = petfactory('purebread')
+petStore(dog1Class).show_pet()
 
-    StandardCar = Standard()
-    objects.append(Adapter(StandardCar, type=StandardCar.Engine))
+dog2Class = petfactory('stray')
+petStore(dog2Class).show_pet()
 
-    ElectricCar = Electric()
-    objects.append(Adapter(ElectricCar, type=ElectricCar.Battery))
+pet_obj = pet()
+petBuilder = hair_builder(pet_obj)
+build_pet = director(petBuilder)
+build_pet.get_pet_without_hair()
+pet_built = build_pet.get_pet()
+print(pet_built)
 
-    for obj in objects:
-        print("A {0} is a {1} vehicle".format(obj.name, obj.type()))
+pet_obj_hair = pet()
+petBuilder = hair_builder(pet_obj_hair)
+build_pet = director(petBuilder)
+build_pet.get_pet_with_hair()
+pet_built = build_pet.get_pet()
+print(pet_built)
 
-    print("-------------------Composite Method------------------------")
+identity = identity()
+proto_1 = prototype()
+proto_1.register_class('sandy', identity)
+dog_cloned = proto_1.clone('sandy', color='yellow', voice='low')
+print(dog_cloned)
 
-    topLevelMenu = CompositeElement("Toyota Group")
-    subMenuItem1 = CompositeElement("Toyota")
-    subMenuItem2 = CompositeElement("Lexus")
-    subMenuItem11 = LeafElement("Corola Hybrid")
-    subMenuItem12 = LeafElement("Rav4 Hybrid")
-    subMenuItem13 = LeafElement("Prado Engine")
-    subMenuItem21 = LeafElement("NX Engine")
-    subMenuItem22 = LeafElement("RX Hybrid")
-    subMenuItem23 = LeafElement("RZ 450e Electric")
+x = singleton(Kingdom="Animalia")
+print(f"The current version is {x}")
+
+y = singleton(Subkingdom="Bilateria")
+print(f"The current version is {x}")
+
+z = singleton(Infrakingdom="Deuterostomia")
+print(f"The current version is {x}")
+
+print("-------------------Adapter Method------------------------")
+"""list to store objects"""
+objects = []
+
+HighEnergyDog = High()
+objects.append(Adapter(HighEnergyDog, type=HighEnergyDog.HighEnergy))
+
+MediumEnergyDog = Medium()
+objects.append(Adapter(MediumEnergyDog, type=MediumEnergyDog.MediumEnergy))
+
+LowEnergyDog = Low()
+objects.append(Adapter(LowEnergyDog, type=LowEnergyDog.LowEnergy))
+
+for obj in objects:
+    print("A {0} {1}".format(obj.name, obj.type()))
+
+print("-------------------Composite Method------------------------")
+    topLevelMenu = CompositeElement("Dogs")
+    subMenuItem1 = CompositeElement("Long")
+    subMenuItem2 = CompositeElement("Short")
+    subMenuItem11 = LeafElement("Labrador")
+    subMenuItem12 = LeafElement("Akita")
+    subMenuItem13 = LeafElement("Harrier")
+    subMenuItem21 = LeafElement("Mops")
+    subMenuItem22 = LeafElement("Bulldog")
+    subMenuItem23 = LeafElement("Beagle")
     subMenuItem1.add(subMenuItem11)
     subMenuItem1.add(subMenuItem12)
     subMenuItem1.add(subMenuItem13)
     subMenuItem2.add(subMenuItem21)
     subMenuItem2.add(subMenuItem22)
     subMenuItem2.add(subMenuItem23)
-
     topLevelMenu.add(subMenuItem1)
     topLevelMenu.add(subMenuItem2)
     topLevelMenu.showDetails()
 
-    print("-------------------Decorator Method------------------------")
-    before_gfg = BasicCar("Toyota Corola Hybrid")
-    after_gfg = EngineTuning(BodyTuning(InteriorTuning(before_gfg)))
+print("-------------------Decorator Method------------------------")
+    before_gfg = SimpleDog("Husky")
+    after_gfg = DogSize(DogEnergy(DogShedding(before_gfg)))
 
     print("before tuning :", before_gfg.render())
     print("after tuning :", after_gfg.render())
-
-    print("-------------------Proxy Method------------------------")
-    highwayProxy = HighwayProxy()
-    highwayProxy.drivingOnHighway()
-    highwayProxy.timeLeft = 100
-    highwayProxy.drivingOnHighway()
-
-    print("-------------------Flyweight Method------------------------")
-    car_data = (('a', 1, 'Toyota'), ('a', 2, 'Porsche'), ('b', 1, 'Toyota'))
-    car_family_objects = []
-    for i in car_data:
-        obj = CarFamilies(i[0], i[1])
-        obj.set_car_info(i[2])
-        car_family_objects.append(obj)
-    for i in car_family_objects:
-        print("id = " + str(id(i)))
-        print(i.get_car_info())
